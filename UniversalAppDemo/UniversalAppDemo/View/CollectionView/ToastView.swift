@@ -16,11 +16,11 @@ class ToastView: UIView {
         super.init(frame: .zero)
         
         messageLabel.text = message
-        messageLabel.textColor = .white
+        messageLabel.textColor = .red
         messageLabel.font = UIFont.systemFont(ofSize: 16)
         messageLabel.textAlignment = .center
         
-        backgroundColor = UIColor.red.withAlphaComponent(0.6)
+        backgroundColor = UIColor.black.withAlphaComponent(0.9)
         layer.cornerRadius = 10
         clipsToBounds = true
         
