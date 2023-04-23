@@ -8,15 +8,31 @@
 import UIKit
 
 class ViewController: UIViewController {
-
-    @IBOutlet weak var collectionView: UICollectionView!
     
+    @IBOutlet weak var collectionView: UICollectionView!
     let viewModel = SearchViewModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         getNewsDetails()
         updateUI()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
+            return
+        }
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            let width = (collectionView.bounds.width / 4) - 15
+            flowLayout.itemSize = CGSize(width: width, height: 150)
+        } else {
+            let width = (collectionView.bounds.width / 8) - 20
+            flowLayout.itemSize = CGSize(width: width, height: 150)
+        }
+        
+        flowLayout.invalidateLayout()
     }
     
     func updateUI() {
@@ -43,14 +59,16 @@ class ViewController: UIViewController {
 //MARK: UICollectionViewDelegate, UICollectionViewDataSource
 extension ViewController : UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 200
+        return viewModel.fetchedResultsController.fetchedObjects?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell : InfoCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "InfoCollectionViewCell", for: indexPath) as! InfoCollectionViewCell
-        cell.newsTitle.text = "Item cell.newsTitle.text = + String(indexPath.row)" + String(indexPath.row)
-        cell.backgroundColor = UIColor.gray
-        cell.newsTitle.textColor = UIColor.red
+        let news = viewModel.fetchedResultsController.object(at: indexPath)
+        cell.newsTitle.text = news.title
+        if let imageurl = URL(string: news.imageUrl ?? "") {
+            cell.loadImage(url: imageurl)
+        }
         return cell
     }
 }

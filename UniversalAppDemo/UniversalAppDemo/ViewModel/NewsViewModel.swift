@@ -6,11 +6,25 @@
 //
 
 import Foundation
+import CoreData
 
 class SearchViewModel: NSObject {
     var operationQueue = OperationQueue()
     var searchResult: FootballNewsModel?
     
+    lazy var fetchedResultsController: NSFetchedResultsController<News> = {
+        let fetchRequest: NSFetchRequest<News> = News.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+        let context = CoreDataManager.sharedContextManager.mainManagedObjectContext
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            fatalError("Failed to fetch entities: \(error)")
+        }
+        return fetchedResultsController
+    }()
+
     //MARK: Get  News result
     func getNewsList(completion: @escaping (Bool, String?) -> Void) {
         if let listURL = URL(string: Constants.newsList) {
@@ -28,6 +42,9 @@ class SearchViewModel: NSObject {
                             print(string1)
                             let activityLog = try JSONDecoder().decode(FootballNewsModel.self, from: _data)
                             self.searchResult = activityLog
+                            if let newsData = self.searchResult?.data {
+                                self.saveToCoreData(news: newsData)
+                            }
                             completion(true, "Result Available")
                         } catch {
                             print(error.localizedDescription)
@@ -44,6 +61,25 @@ class SearchViewModel: NSObject {
             
         } else {
             print("No url")
+        }
+    }
+    
+    //MARK : Save news to coredata
+    private func saveToCoreData(news: [Datum?]) {
+        let context = CoreDataManager.sharedContextManager.mainManagedObjectContext
+        CoreDataManager.sharedContextManager.removeAll()
+        for news in news {
+            let newsObj = News(context: context)
+            newsObj.title = news?.title
+            newsObj.imageUrl = news?.imageURL
+            newsObj.readMoreUrl = news?.readMoreURL
+            newsObj.date = news?.date
+        }
+        do {
+            try context.save()
+            print("Data saved successfully")
+        } catch {
+            print(error.localizedDescription)
         }
     }
 }

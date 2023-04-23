@@ -13,6 +13,7 @@
 		3A24461529F30C05001F77C0 /* FootballNewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A24461429F30C05001F77C0 /* FootballNewsModel.swift */; };
 		3A24461829F46692001F77C0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A24461729F46692001F77C0 /* Constants.swift */; };
 		3A24461A29F46B5D001F77C0 /* InfoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A24461929F46B5D001F77C0 /* InfoCollectionViewCell.xib */; };
+		3A24461E29F53F1D001F77C0 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A24461D29F53F1D001F77C0 /* CoreDataManager.swift */; };
 		3AB260E929EF1EB000658A7C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB260E829EF1EB000658A7C /* AppDelegate.swift */; };
 		3AB260EB29EF1EB000658A7C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB260EA29EF1EB000658A7C /* SceneDelegate.swift */; };
 		3AB260ED29EF1EB000658A7C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB260EC29EF1EB000658A7C /* ViewController.swift */; };
@@ -48,6 +49,7 @@
 		3A24461429F30C05001F77C0 /* FootballNewsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FootballNewsModel.swift; sourceTree = "<group>"; };
 		3A24461729F46692001F77C0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		3A24461929F46B5D001F77C0 /* InfoCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InfoCollectionViewCell.xib; sourceTree = "<group>"; };
+		3A24461D29F53F1D001F77C0 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		3AB260E529EF1EB000658A7C /* UniversalAppDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UniversalAppDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AB260E829EF1EB000658A7C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3AB260EA29EF1EB000658A7C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 		3A24460F29F30BB1001F77C0 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				3A24461C29F53F0F001F77C0 /* CoreData */,
 				3A24461229F30BED001F77C0 /* NewsViewModel.swift */,
 			);
 			path = ViewModel;
@@ -119,6 +122,14 @@
 				3A24461729F46692001F77C0 /* Constants.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		3A24461C29F53F0F001F77C0 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				3A24461D29F53F1D001F77C0 /* CoreDataManager.swift */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		3AB260DC29EF1EB000658A7C = {
@@ -323,6 +334,7 @@
 				3AB260F329EF1EB000658A7C /* UniversalAppDemo.xcdatamodeld in Sources */,
 				3AB260ED29EF1EB000658A7C /* ViewController.swift in Sources */,
 				3AB260E929EF1EB000658A7C /* AppDelegate.swift in Sources */,
+				3A24461E29F53F1D001F77C0 /* CoreDataManager.swift in Sources */,
 				3AB260EB29EF1EB000658A7C /* SceneDelegate.swift in Sources */,
 				3A24461829F46692001F77C0 /* Constants.swift in Sources */,
 			);
