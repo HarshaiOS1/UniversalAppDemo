@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     var fetchedResultsController: NSFetchedResultsController<News>?
     let activityView = UIActivityIndicatorView(style: .large)
     var refresher = UIRefreshControl()
+    var errorLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,10 +48,12 @@ class ViewController: UIViewController {
         collectionView.register(UINib(nibName: "InfoCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "InfoCollectionViewCell")
         refresher.tintColor = UIColor.red
         refresher.addTarget(self, action: #selector(loadData), for: .valueChanged)
+        
         collectionView.addSubview(refresher)
         
-        let errorLabel = UILabel.init(frame: CGRect.init(origin: CGPoint.init(x: 0.0, y: self.view.frame.midY), size: CGSize.init(width: self.view.frame.width, height: 44.0)))
+        errorLabel = UILabel.init(frame: CGRect.init(origin: CGPoint.init(x: 0.0, y: self.view.frame.midY), size: CGSize.init(width: self.view.frame.width, height: 44.0)))
         errorLabel.textAlignment = .center
+        
         if ReachabilityManager.manager.isConnected() {
             getNewsDetails()
         } else {
@@ -72,6 +75,7 @@ class ViewController: UIViewController {
         viewModel.getNewsList { [weak self] isSuccess, response in
             if isSuccess {
                 DispatchQueue.main.async {
+                    self?.errorLabel.isHidden = true
                     self?.activityView.stopAnimating()
                     self?.fetchedResultsController = self?.viewModel.getResult()
                     self?.refresher.endRefreshing()
@@ -113,6 +117,8 @@ extension ViewController : UICollectionViewDelegate, UICollectionViewDataSource 
                     readMoreurl = readMoreurl.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
                     vc.newsURL = readMoreurl
                     self.present(vc, animated: true)
+                } else {
+                    ToastView(message: "No detail found").show()
                 }
             }
         } else {
