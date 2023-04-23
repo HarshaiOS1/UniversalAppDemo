@@ -7,6 +7,7 @@
 
 
 import UIKit
+import SDWebImage
 
 class InfoCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var newsTitle: UILabel!
@@ -24,13 +25,14 @@ class InfoCollectionViewCell: UICollectionViewCell {
     }
     
     func loadImage(url: URL) {
-        DispatchQueue.global().async { [weak self] in
-            if let data = try? Data(contentsOf: url) {
-                if let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        self?.newsImageView.image = image
-                    }
+        newsImageView.image = UIImage.init(systemName: "photo")
+        DispatchQueue.global(qos: .background).async {
+            self.newsImageView.sd_setImage(with: url, placeholderImage: UIImage.init(systemName: "photo"), options: .waitStoreCache) { (_, _, _, _) in
+                // Do any UI updates on the main thread
+                DispatchQueue.main.async {
+                    self.setNeedsLayout()
                 }
+                
             }
         }
     }
