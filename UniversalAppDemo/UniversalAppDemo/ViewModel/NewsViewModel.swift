@@ -12,19 +12,6 @@ class SearchViewModel: NSObject {
     var operationQueue = OperationQueue()
     var searchResult: FootballNewsModel?
     
-    lazy var fetchedResultsController: NSFetchedResultsController<News> = {
-        let fetchRequest: NSFetchRequest<News> = News.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
-        let context = CoreDataManager.sharedContextManager.mainManagedObjectContext
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-        do {
-            try fetchedResultsController.performFetch()
-        } catch {
-            fatalError("Failed to fetch entities: \(error)")
-        }
-        return fetchedResultsController
-    }()
-
     //MARK: Get  News result
     func getNewsList(completion: @escaping (Bool, String?) -> Void) {
         if let listURL = URL(string: Constants.newsList) {
@@ -62,6 +49,19 @@ class SearchViewModel: NSObject {
         } else {
             print("No url")
         }
+    }
+    
+    func getResult() -> NSFetchedResultsController<News> {
+        let fetchRequest: NSFetchRequest<News> = News.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+        let context = CoreDataManager.sharedContextManager.mainManagedObjectContext
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            fatalError("Failed to fetch entities: \(error)")
+        }
+        return fetchedResultsController
     }
     
     //MARK : Save news to coredata
